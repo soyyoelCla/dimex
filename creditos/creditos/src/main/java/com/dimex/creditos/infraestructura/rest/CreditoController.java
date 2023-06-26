@@ -10,13 +10,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dimex.creditos.aplicacion.servicios.TcDimexClienteServicio;
 import com.dimex.creditos.aplicacion.servicios.TrDimexSolicitudesServicio;
-import com.dimex.creditos.dominio.entity.TrDimexSolicitudes;
+import com.dimex.creditos.infraestructura.dto.DispersaCredito;
+import com.dimex.creditos.infraestructura.dto.EstatusSolicitud;
 import com.dimex.creditos.infraestructura.dto.PrincipalSolicitud;
 import com.dimex.creditos.infraestructura.dto.Respuesta;
 
 import io.micrometer.common.util.StringUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
+@RequestMapping("/creditos")
 public class CreditoController {
      
     @Autowired
@@ -25,6 +31,9 @@ public class CreditoController {
     @Autowired
     TrDimexSolicitudesServicio trDimexSolicitudesServicio;
 
+    @Operation(summary = "Recibir solicitud, segun la promotora")
+	@ApiResponse(responseCode = "200", description = "\"Solicitud registrada con  exitó", content = {
+	@Content(mediaType = "application/json", schema = @Schema(implementation = PrincipalSolicitud.class)) })
     @PostMapping("/creaSolicitud")
     public ResponseEntity<Respuesta> crearSolicitud(@RequestBody PrincipalSolicitud principalSolicitud){
         ResponseEntity regresar = null;
@@ -43,10 +52,29 @@ public class CreditoController {
     }
     
 
-    @RequestMapping("/")
-    public String home(){
-        return "Hello World!";
+    @Operation(summary = "Modificar estatus solicitud")
+	@ApiResponse(responseCode = "501", description = "Por el momento no se tiene implementado este servicio...", content = {
+	@Content(mediaType = "application/json", schema = @Schema(implementation = EstatusSolicitud.class)) })
+    @PostMapping("/estatusSolicitud")
+    public ResponseEntity<Respuesta> modificarSolicitud(@RequestBody EstatusSolicitud estatusSolicitud){
+       ResponseEntity regresar  = new ResponseEntity(new Respuesta( String.valueOf(HttpStatus.NOT_IMPLEMENTED.value()),"Por el momento no se tiene implementado este servicio..."),HttpStatus.NOT_IMPLEMENTED);
+       return regresar; 
     }
+
+
+    @Operation(summary = "Autorizar crédito")
+	@ApiResponse(responseCode = "501", description = "Por el momento no se tiene implementado este servicio...", content = {
+	@Content(mediaType = "application/json", schema = @Schema(implementation = EstatusSolicitud.class)) })
+    
+    @PostMapping("/dispersaCredito")
+    public ResponseEntity<Respuesta> dispersarCredito(@RequestBody DispersaCredito dispersaCredito){
+       ResponseEntity regresar  = new ResponseEntity(new Respuesta( String.valueOf(HttpStatus.NOT_IMPLEMENTED.value()),"Por el momento no se tiene implementado este servicio..."),HttpStatus.NOT_IMPLEMENTED);
+       return regresar; 
+    }
+
+
+
+    
 
 
 }
